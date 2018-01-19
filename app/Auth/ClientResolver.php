@@ -7,6 +7,7 @@ namespace App\Auth;
 use Illuminate\Cache\CacheManager as Cache;
 use Laravel\Passport\Client;
 use Laravel\Passport\ClientRepository;
+use Laravel\Passport\Token;
 
 
 class ClientResolver
