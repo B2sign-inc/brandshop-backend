@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
 use Laravel\Passport\RouteRegistrar;
@@ -29,9 +28,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes(function (RouteRegistrar $router) {
             $router->forAccessTokens();
-        }, ['prefix' => 'api']);
+        }, ['prefix' => 'api', 'middleware' => ['cors']]);
 
-        Passport::tokensExpireIn(now()->addMinutes(10));
-        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::tokensExpireIn(now()->addSeconds(config('ACCESS_TOKEN_EXPIRED', 3600)));
+        Passport::refreshTokensExpireIn(now()->addDays(config('REFRESH_TOKEN_EXPIRED', 30)));
     }
 }
