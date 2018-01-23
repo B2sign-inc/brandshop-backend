@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::post('token/refresh', 'Api\AuthController@refreshToken')->name('api.auth.token.refresh');
+Route::get('user/verify/{token}', 'Api\AuthController@verifyUser')->name('api.user.verify');
 
 Route::post('login', 'Api\AuthController@login')->name('api.login');
 Route::post('register', 'Api\AuthController@register')->name('api.register');

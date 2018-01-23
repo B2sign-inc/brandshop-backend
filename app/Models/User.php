@@ -37,6 +37,11 @@ class User extends Authenticatable
         'is_verified' => 'boolean',
     ];
 
+    public function getNameAttribute()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
     public function isVerified()
     {
         return boolval($this->is_verified);

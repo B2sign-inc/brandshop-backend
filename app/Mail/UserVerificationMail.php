@@ -59,7 +59,7 @@ class UserVerificationMail extends Mailable
         return $this->markdown('emails.users.verification')
             ->with([
                 'user' => $this->user,
-                'verifyUrl' => route('authenticate.user.verify', [
+                'verifyUrl' => route('user.verify', [
                     'token' => $this->userVerification->token
                 ]),
             ]);

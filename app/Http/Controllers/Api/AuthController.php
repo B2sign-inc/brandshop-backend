@@ -14,6 +14,8 @@ use Laravel\Passport\Token;
 
 class AuthController extends Controller
 {
+    use ApiResponse;
+
     protected $authProxy;
 
     public function __construct(Proxy $authProxy)
@@ -77,15 +79,11 @@ class AuthController extends Controller
         // fire
         event(new UserRegistered($user, $userVerification));
 
-        return response()->json(['success' => true]);
+        return $this->respondSuccess('You have successfully registered. An email is sent to you for verification');
     }
 
     public function verifyUser($token)
     {
-        if (!$token) {
-            throw new \Exception('Empty Token');
-        }
-
         $userVerification = UserVerification::where('token', $token)
             ->firstOrFail();
 
@@ -96,7 +94,7 @@ class AuthController extends Controller
         $userVerification->user->verified();
         $userVerification->delete();
 
-        return response('Verified successfully');
+        return $this->respondSuccess('Congratulations. Verified');
     }
 
     // TODO reset password
