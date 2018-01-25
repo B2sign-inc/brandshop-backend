@@ -19,6 +19,10 @@ Route::get('user/verify/{token}', 'Api\AuthController@verifyUser')->name('api.us
 Route::post('login', 'Api\AuthController@login')->name('api.login');
 Route::post('register', 'Api\AuthController@register')->name('api.register');
 
+Route::get('categories', 'Api\CategoryController@index')->name('api.categories.index');
+Route::get('categories/{category}/products', 'Api\CategoryController@products')->name('api.categories.products');
+Route::get('products/{product}', 'Api\ProductController@show')->name('api.products.show');
+
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('logout', 'Api\AuthController@logout')->name('api.logout'); 
     
