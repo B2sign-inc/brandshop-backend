@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Auth\Proxy;
+use App\Brandshop\Auth\Proxy;
 use App\Events\UserRegistered;
 use App\Models\User;
 use App\Models\UserVerification;
@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Passport\Token;
 
 class AuthController extends Controller
 {

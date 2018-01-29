@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Auth;
+namespace App\Brandshop\Auth;
 
 
 use Illuminate\Foundation\Application;

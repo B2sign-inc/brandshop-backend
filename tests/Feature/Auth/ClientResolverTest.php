@@ -3,8 +3,8 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Auth\ClientResolver;
-use App\Auth\Proxy;
+use App\Brandshop\Auth\ClientResolver;
+use App\Brandshop\Auth\Proxy;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Passport\Client;
 use Laravel\Passport\ClientRepository;

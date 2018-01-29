@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Auth\ClientResolver;
-use App\Auth\Proxy;
+use App\Brandshop\Auth\ClientResolver;
+use App\Brandshop\Auth\Proxy;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
