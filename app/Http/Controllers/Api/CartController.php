@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,13 +20,7 @@ class CartController extends Controller
         ]);
         $data['user_id'] = Auth::user()->id;
 
-        $product = Product::findOrFail($data['product_id']);
-
-        $cart = new Cart();
-        $cart->quantity = $data['quantity'];
-        $cart->user_id = Auth::user()->id;
-
-        $product->carts()->save($cart);
+        $cart = Cart::create($data);
 
         return new CartResource($cart);
     }
