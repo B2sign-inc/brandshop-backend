@@ -44,4 +44,7 @@ Route::group(['middleware' => ['auth:api'], 'namespace' => 'Api'], function () {
     Route::post('addresses', 'AddressesController@store')->name('api.addresses.store');
     Route::put('addresses/{address}', 'AddressesController@update')->name('api.addresses.update');
     Route::delete('addresses/{address}', 'AddressesController@destroy')->name('api.addresses.delete');
+
+    Route::get('emailMessages', 'EmailMessagesController@index')->name('api.emailMessages.index');
+    Route::get('emailMessages/{emailMessage}', 'EmailMessagesController@show')->name('api.emailMessages.show');
 });
