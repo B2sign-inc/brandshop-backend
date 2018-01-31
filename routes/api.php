@@ -27,8 +27,10 @@ Route::get('products/{product}', 'Api\ProductController@show')->name('api.produc
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('logout', 'Api\AuthController@logout')->name('api.logout');
 
+    Route::get('carts', 'Api\CartController@index')->name('api.carts.index');
     Route::post('carts', 'Api\CartController@store')->name('api.carts.store');
     Route::put('carts/{cart}', 'Api\CartController@update')->name('api.carts.update');
+    Route::delete('carts/empty', 'Api\CartController@empty')->name('api.carts.empty');
     Route::delete('carts/{cart}', 'Api\CartController@destroy')->name('api.carts.destroy');
 
     Route::get('/user', function (Request $request) {

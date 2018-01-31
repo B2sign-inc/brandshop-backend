@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CartCollection;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use Illuminate\Http\Request;
@@ -11,6 +12,18 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
     use ApiResponse;
+
+    protected function carts()
+    {
+        $carts = Auth::user()->carts()->with('product')->get();
+
+        return new CartCollection($carts);
+    }
+
+    public function index()
+    {
+        return $this->carts();
+    }
 
     public function store(Request $request)
     {
@@ -22,7 +35,7 @@ class CartController extends Controller
 
         $cart = Cart::create($data);
 
-        return new CartResource($cart);
+        return $this->carts();
     }
 
     public function update(Request $request, Cart $cart)
@@ -39,7 +52,14 @@ class CartController extends Controller
             $cart->save();
         }
 
-        return new CartResource($cart);
+        return $this->carts();
+    }
+
+    public function empty()
+    {
+        Auth::user()->carts()->delete();
+
+        return $this->respondSuccess('Empty cart successfully.');
     }
 
     public function destroy(Cart $cart)
@@ -50,6 +70,6 @@ class CartController extends Controller
 
         $cart->delete();
 
-        return $this->respondSuccess('Delete successfully.');
+        return $this->carts();
     }
 }
