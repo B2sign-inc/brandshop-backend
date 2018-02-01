@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/user', function (Request $request) {
         return new \App\Http\Resources\UserResource($request->user());
     });
+    Route::put('user', 'Api\AuthController@updateUser')->name('api.user.update');
 });
 
 Route::group(['middleware' => ['auth:api'], 'namespace' => 'Api'], function () {
