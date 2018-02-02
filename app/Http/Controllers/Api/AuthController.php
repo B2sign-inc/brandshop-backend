@@ -104,9 +104,6 @@ class AuthController extends Controller
         ]);
 
         $user = Auth::user();
-        if (!$user) {
-            return $this->respondForbidden();
-        }
         $user->firstname = $data['firstname'];
         $user->lastname = $data['lastname'];
         $user->save();

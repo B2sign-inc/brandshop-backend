@@ -15,15 +15,10 @@ class EmailMessagesController extends Controller
 
     public function index(Request $request)
     {
-        $user = Auth::user();
-        if (!$user) {
-            return $this->respondForbidden();
-        }
-
         $page = $request->get('page');
         $page = (intval($page) > 0) ? intval($page) : 1;
 
-        $emailMessages = $user->emailMessages()->paginate(15, ['*'], 'page', $page);
+        $emailMessages = Auth::user()->emailMessages()->paginate(15, ['*'], 'page', $page);
         return EmailMessageResource::collection($emailMessages);
     }
 
