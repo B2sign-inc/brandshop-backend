@@ -59,7 +59,7 @@ class CartController extends Controller
     {
         Auth::user()->carts()->delete();
 
-        return $this->respondSuccess('Empty cart successfully.');
+        return $this->carts();
     }
 
     public function destroy(Cart $cart)

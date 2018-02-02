@@ -13,10 +13,6 @@ class EmailMessagesTableSeeder extends Seeder
      */
     public function run()
     {
-        $emailMessages = factory(EmailMessage::class)
-                            ->times(40)
-                            ->make();
-
-        EmailMessage::insert($emailMessages->toArray());
+        factory(EmailMessage::class, 40)->create();
     }
 }

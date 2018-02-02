@@ -13,10 +13,6 @@ class AddressesTableSeeder extends Seeder
      */
     public function run()
     {
-        $addresses = factory(Address::class)
-                        ->times(20)
-                        ->make();
-
-        Address::insert($addresses->toArray());
+        factory(Address::class, 20)->create();
     }
 }

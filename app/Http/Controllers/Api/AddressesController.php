@@ -16,10 +16,13 @@ class AddressesController extends Controller
 
     public function index(Request $request)
     {
-        $page = $request->get('page');
-        $page = (intval($page) > 0) ? intval($page) : 1;
+        $page = intval($request->get('page'));
+        $page = $page > 0 ? $page : 1;
 
-        $addresses = Auth::user()->addresses()->paginate(15, ['*'], 'page', $page);
+        $limit = intval($request->get('limit'));
+        $limit = $limit > 0 ? $limit : 15;
+
+        $addresses = Auth::user()->addresses()->paginate($limit, ['*'], 'page', $page);
         return AddressResource::collection($addresses);
     }
 
