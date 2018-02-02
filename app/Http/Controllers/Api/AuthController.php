@@ -96,6 +96,20 @@ class AuthController extends Controller
         return $this->respondSuccess('Congratulations. Verified');
     }
 
+    public function updateUser(Request $request)
+    {
+        $data = $this->validate($request, [
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+        ]);
+
+        $user = Auth::user();
+        $user->firstname = $data['firstname'];
+        $user->lastname = $data['lastname'];
+        $user->save();
+        return $this->respondSuccess('Updated Successfully.');
+    }
+
     // TODO reset password
     public function resetPassword()
     {
