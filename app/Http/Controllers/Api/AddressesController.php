@@ -56,8 +56,17 @@ class AddressesController extends Controller
 
     public function destroy(Address $address)
     {
-        if ($address->user_id !== Auth::user()->id) {
+        $user = Auth::user();
+        if ($address->user_id !== $user->id) {
             return $this->respondForbidden();
+        }
+
+        if ($user->default_billing_id === $address->id ||
+            $user->default_shipping_id === $address->id
+        ) {
+            $user->default_billing_id = ($user->default_billing_id === $address->id) ? 0 : $user->default_billing_id;
+            $user->default_shipping_id = ($user->default_shipping_id === $address->id) ? 0 : $user->default_shipping_id;
+            $user->save();
         }
 
         $address->delete();

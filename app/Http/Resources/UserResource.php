@@ -18,6 +18,8 @@ class UserResource extends Resource
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
+            'default_shipping' => $this->default_shipping_id,
+            'default_billing' => $this->default_billing_id,
         ];
     }
 }
