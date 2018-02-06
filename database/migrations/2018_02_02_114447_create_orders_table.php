@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->tinyInteger('status')->unsigned();
+            $table->string('status', 20);
             $table->integer('shipping_address_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('shipping_id')->unsigned();
