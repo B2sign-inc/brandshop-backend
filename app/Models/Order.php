@@ -12,12 +12,13 @@ class Order extends Model implements StatableInterface
 
     protected $states = [
         'created',
+        'paid',
         'processed',
         'cancelled',
         'shipped',
         'delivered',
         'completed',
-        'returned',
+        'refunded',
     ];
 
     protected $transitions = [
@@ -25,8 +26,12 @@ class Order extends Model implements StatableInterface
             'from' => ['created'],
             'to' => 'processed',
         ],
+        'pay' => [
+            'from' => ['created'],
+            'to' => 'paid',
+        ],
         'cancel' => [
-            'from' => ['created', 'processed'],
+            'from' => ['created', 'paid', 'processed'],
             'to' => ['cancelled'],
         ],
         'ship' => [
@@ -37,15 +42,15 @@ class Order extends Model implements StatableInterface
             'from' => ['shipped'],
             'to' => 'delivered',
         ],
-        'return' => [
+        'refund' => [
             'from' => ['delivered'],
-            'to' => 'returned',
+            'to' => 'refunded',
         ],
     ];
 
     public function getState()
     {
-        return $this->status;
+        return $this->state;
     }
 
     public function getStates()
@@ -65,6 +70,6 @@ class Order extends Model implements StatableInterface
      */
     public function getStatePropertyName()
     {
-        return 'status';
+        return 'state';
     }
 }

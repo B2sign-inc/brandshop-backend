@@ -28,7 +28,8 @@ trait Statable
                 $this->stateMachine->addTransition(new Transition($transitionName, $transition['from'], $transition['to']));
             }
 
-            $this->stateMachine->initialize($this->getState());
+            // State is null while first time to use state machine
+            $this->getState() && $this->stateMachine->initialize($this->getState());
         }
 
         return $this->stateMachine;

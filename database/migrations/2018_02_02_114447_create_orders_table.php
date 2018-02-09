@@ -15,11 +15,12 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('status', 20);
+            $table->string('state', 20)->default('created');
             $table->integer('shipping_address_id')->unsigned();
+            $table->integer('billing_address_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('shipping_id')->unsigned();
-            $table->integer('payment_id')->unsigned();
+            $table->integer('shipping_method_id')->unsigned();
+            $table->integer('payment_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

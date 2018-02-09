@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Brandshop\Shipping\Validator\AddressValidator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\AddressRequest;
@@ -71,5 +72,10 @@ class AddressesController extends Controller
 
         $address->delete();
         return $this->respondSuccess('Deleted successfully.');
+    }
+
+    public function validateAddress(AddressValidator $addressValidator, Request $request)
+    {
+        $addressValidator->validate(new Address($request->all()));
     }
 }
