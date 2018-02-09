@@ -73,6 +73,11 @@ class OrderControllerTest extends TestCase
 
     public function testPlaceOrderWithErrorAddress()
     {
+        $user = factory(User::class)->create();
+        factory(Cart::class)->create(['user_id' => $user->id]);
+
+        $accessToken = $this->login(['email' => $user->email, 'password' => 'secret']);
+
         $address = [
             'first_name' => 'ben',
             'last_name' => 'waht',
@@ -83,7 +88,7 @@ class OrderControllerTest extends TestCase
             'postcode' => '91780',
         ];
 
-        $response = $this->requestAsLogined('post', route('api.orders.place'), [
+        $response = $this->requestAsToken($accessToken, 'post', route('api.orders.place'), [
             'shipping' => $address,
             'shipping_method_id' => factory(ShippingMethod::class)->create()->id,
         ]);
