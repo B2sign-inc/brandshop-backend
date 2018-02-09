@@ -66,7 +66,6 @@ class OrderController extends Controller
             if ($e instanceof ValidationException) {
                 throw new ValidationException($e->validator, $e->response, $e->errorBag);
             }
-            var_dump($e);die;
             throw new $e;
         }
     }
