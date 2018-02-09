@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Tests\Feature\FSM;
+namespace Tests\Feature\FSM\Brandshop\Traits;
 
 
 use Tests\TestCase;
 
-class TransitionTest extends TestCase
+class StatableTest extends TestCase
 {
     public function testTrue()
     {

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Feature\FSM;
+namespace Tests\Feature\Brandshop\FSM;
 
 
 use App\Brandshop\FSM\State;

@@ -14,11 +14,11 @@ class Address extends Model
         parent::boot();
 
         self::creating(function ($model) {
-            $model->validate();
+//            $model->validate();
         });
 
         self::updating(function ($model) {
-            $model->validate();
+//            $model->validate();
         });
     }
 
@@ -36,8 +36,8 @@ class Address extends Model
      * @return bool
      * @throws InvalidAddressException
      */
-    public function validate()
+    public function validate($soft = false)
     {
-        return App::make(AddressValidator::class)->validate($this);
+        return App::make(AddressValidator::class)->validate($this, $soft);
     }
 }

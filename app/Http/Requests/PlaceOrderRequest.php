@@ -13,7 +13,7 @@ class PlaceOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,23 +25,23 @@ class PlaceOrderRequest extends FormRequest
     {
         $validation['shipping.first_name'] = 'required|string|max:255';
         $validation['shipping.last_name'] = 'required|string|max:255';
-        $validation['shipping.phone_number'] = 'required|number';
+        $validation['shipping.phone_number'] = 'required|integer';
         $validation['shipping.street_address'] = 'required|string|max:255';
         $validation['shipping.city'] = 'required|string|max:255';
         $validation['shipping.state'] = 'required|string|max:255';
         $validation['shipping.postcode'] = 'required|string|max:255';
 
-        if (null === $this->request->get('use_different_billing_address')) {
+        if ($this->request->get('use_different_billing_address')) {
             $validation['billing.first_name'] = 'required|string|max:255';
             $validation['billing.last_name'] = 'required|string|max:255';
-            $validation['billing.phone_number'] = 'required|number';
+            $validation['billing.phone_number'] = 'required|integer';
             $validation['billing.street_address'] = 'required|string|max:255';
             $validation['billing.city'] = 'required|string|max:255';
             $validation['billing.state'] = 'required|string|max:255';
             $validation['billing.postcode'] = 'required|string|max:255';
         }
 
-        $validation['shipping_method_id'] = 'required|exist:shipping_methods,id';
+        $validation['shipping_method_id'] = 'required|exists:shipping_methods,id';
 
 
         return $validation;

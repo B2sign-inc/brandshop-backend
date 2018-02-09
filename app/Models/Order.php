@@ -10,6 +10,8 @@ class Order extends Model implements StatableInterface
 {
     use Statable;
 
+    protected $fillable = ['state', 'shipping_address_id', 'billing_address_id', 'user_id', 'shipping_method_id', 'payment_id'];
+
     protected $states = [
         'created',
         'paid',
@@ -71,5 +73,23 @@ class Order extends Model implements StatableInterface
     public function getStatePropertyName()
     {
         return 'state';
+    }
+
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function syncToOrderProduct(User $user)
+    {
+        return array_map(function($item) use ($user) {
+            /** @var $item Cart */
+            return OrderProduct::create([
+                'order_id' => $this->id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'user_id' => $user->id
+            ]);
+
+        }, $user->carts);
     }
 }

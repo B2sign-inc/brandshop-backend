@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::delete('carts/empty', 'Api\CartController@empty')->name('api.carts.empty');
     Route::delete('carts/{cart}', 'Api\CartController@destroy')->name('api.carts.destroy');
 
+    Route::post('orders/place', 'Api\OrderController@place')->name('api.orders.place');
+
     Route::get('/user', function (Request $request) {
         return new \App\Http\Resources\UserResource($request->user());
     });
