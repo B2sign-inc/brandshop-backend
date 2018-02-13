@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Brandshop\FSM\Callbacks\AfterCancel;
 use App\Brandshop\FSM\Contracts\StatableInterface;
 use App\Brandshop\FSM\Traits\Statable;
+use App\Events\FSM\Order\AfterCancelEvent;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model implements StatableInterface
@@ -39,6 +41,9 @@ class Order extends Model implements StatableInterface
         'cancel' => [
             'from' => ['created', 'paid', 'processed'],
             'to' => ['cancelled'],
+            'callbacks' => [
+                'after' => AfterCancel::class,
+            ]
         ],
         'ship' => [
             'from' => ['processed'],

@@ -73,4 +73,14 @@ class OrderController extends Controller
             throw new \Exception($e->getMessage());
         }
     }
+
+    public function cancel(Order $order)
+    {
+        if (!$order->canTransition('cancel')) {
+            throw new \Exception('It is not allowed to cancel');
+        }
+
+        $order->transition('cancel');
+        $order->save();
+    }
 }

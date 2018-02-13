@@ -22,4 +22,10 @@ interface TransitionInterface
      * @return string
      */
     public function getToState();
+
+    /**
+     * @return array
+     */
+    public function getCallbacks();
+
 }

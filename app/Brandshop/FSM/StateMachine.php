@@ -4,6 +4,7 @@
 namespace App\Brandshop\FSM;
 
 
+use App\Brandshop\FSM\Contracts\CallbackInterface;
 use App\Brandshop\FSM\Contracts\StatableInterface;
 use App\Brandshop\FSM\Contracts\StateInterface;
 use App\Brandshop\FSM\Contracts\StateMachineInterface;
@@ -136,8 +137,12 @@ class StateMachine implements StateMachineInterface
 
         event(TransitionEvent::PRE_TRANSITION, $transitionEvent);
 
+        $this->callCallbacks($transition, 'before');
+
         $this->setCurrentState($transition->getToState());
         $this->model->setAttribute($this->model->getStatePropertyName(), $transition->getToState());
+
+        $this->callCallbacks($transition, 'after');
 
         event(TransitionEvent::POST_TRANSITION, $transitionEvent);
     }
@@ -176,6 +181,24 @@ class StateMachine implements StateMachineInterface
     public function getAvailableTransitions()
     {
         return $this->currentState->getTransitions();
+    }
+
+    protected function callCallbacks(Transition $transition, $position)
+    {
+        $callbacks = $transition->getCallbacks();
+        if ($callback = $callbacks[$position] ?? null) {
+            $resolvedCallback = $this->resolveCallback($callback);
+            $resolvedCallback->handle();
+        }
+    }
+
+    /**
+     * @param $callback
+     * @return CallbackInterface
+     */
+    protected function resolveCallback($callback)
+    {
+        return new $callback($this->model);
     }
 
 }

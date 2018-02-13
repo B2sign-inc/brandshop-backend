@@ -26,11 +26,17 @@ class Transition implements TransitionInterface
      */
     protected $name;
 
-    public function __construct($name, $from, $to)
+    /**
+     * @var array
+     */
+    protected $callbacks;
+
+    public function __construct($name, $from, $to, $callbacks = [])
     {
         $this->name = $name;
         $this->from = $from;
         $this->to = $to;
+        $this->callbacks = $callbacks;
     }
 
     /**
@@ -57,5 +63,10 @@ class Transition implements TransitionInterface
     public function getToState()
     {
         return $this->to;
+    }
+
+    public function getCallbacks()
+    {
+        return $this->callbacks;
     }
 }

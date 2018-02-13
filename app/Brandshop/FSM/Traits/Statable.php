@@ -25,7 +25,12 @@ trait Statable
             }
 
             foreach ($this->getTransitions() as $transitionName => $transition) {
-                $this->stateMachine->addTransition(new Transition($transitionName, $transition['from'], $transition['to']));
+                $this->stateMachine->addTransition(new Transition(
+                    $transitionName,
+                    $transition['from'],
+                    $transition['to'],
+                    $transition['callbacks'] ?? []
+                ));
             }
 
             // State is null while first time to use state machine
