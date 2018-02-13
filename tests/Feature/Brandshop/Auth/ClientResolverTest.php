@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Feature\Auth;
+namespace Tests\Feature\Brandshop\Auth;
 
 use App\Brandshop\Auth\ClientResolver;
 use App\Brandshop\Auth\Proxy;

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a5ae2afb76d7b4426a19dacc0767d746",
-    "content-hash": "f41107daf080bf7649754076a5148a91",
+    "hash": "1c3e2df54fba67f267cbd6382358a6dd",
+    "content-hash": "fc2ceac93b52f36a8ce78479ed897dad",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -119,6 +119,53 @@
                 "laravel"
             ],
             "time": "2018-01-04 06:59:27"
+        },
+        {
+            "name": "braintree/braintree_php",
+            "version": "3.28.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/braintree/braintree_php.git",
+                "reference": "f8ab5ca7b3397536de622fc9640e5b257fc33e71"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/braintree/braintree_php/zipball/f8ab5ca7b3397536de622fc9640e5b257fc33e71",
+                "reference": "f8ab5ca7b3397536de622fc9640e5b257fc33e71",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-dom": "*",
+                "ext-hash": "*",
+                "ext-openssl": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Braintree": "lib/"
+                },
+                "psr-4": {
+                    "Braintree\\": "lib/Braintree"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Braintree",
+                    "homepage": "https://www.braintreepayments.com"
+                }
+            ],
+            "description": "Braintree PHP Client Library",
+            "time": "2018-02-08 23:03:34"
         },
         {
             "name": "danielstjules/stringy",

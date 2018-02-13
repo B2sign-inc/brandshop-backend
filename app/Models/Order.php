@@ -2,22 +2,31 @@
 
 namespace App\Models;
 
+use App\Brandshop\FSM\Callbacks\AfterCancel;
 use App\Brandshop\FSM\Contracts\StatableInterface;
 use App\Brandshop\FSM\Traits\Statable;
+use App\Events\FSM\Order\AfterCancelEvent;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model implements StatableInterface
 {
     use Statable;
 
+    protected $casts = [
+        'user_id' => 'int',
+    ];
+
+    protected $fillable = ['state', 'shipping_address_id', 'billing_address_id', 'user_id', 'shipping_method_id', 'payment_id', 'amount'];
+
     protected $states = [
         'created',
+        'paid',
         'processed',
         'cancelled',
         'shipped',
         'delivered',
         'completed',
-        'returned',
+        'refunded',
     ];
 
     protected $transitions = [
@@ -25,9 +34,16 @@ class Order extends Model implements StatableInterface
             'from' => ['created'],
             'to' => 'processed',
         ],
+        'pay' => [
+            'from' => ['created'],
+            'to' => 'paid',
+        ],
         'cancel' => [
-            'from' => ['created', 'processed'],
+            'from' => ['created', 'paid', 'processed'],
             'to' => ['cancelled'],
+            'callbacks' => [
+                'after' => AfterCancel::class,
+            ]
         ],
         'ship' => [
             'from' => ['processed'],
@@ -37,15 +53,15 @@ class Order extends Model implements StatableInterface
             'from' => ['shipped'],
             'to' => 'delivered',
         ],
-        'return' => [
+        'refund' => [
             'from' => ['delivered'],
-            'to' => 'returned',
+            'to' => 'refunded',
         ],
     ];
 
     public function getState()
     {
-        return $this->status;
+        return $this->state;
     }
 
     public function getStates()
@@ -65,6 +81,30 @@ class Order extends Model implements StatableInterface
      */
     public function getStatePropertyName()
     {
-        return 'status';
+        return 'state';
+    }
+
+    public function orderProducts()
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
+
+    /**
+     * @return array
+     */
+    public function syncToOrderProduct($carts)
+    {
+        $orderProducts = $carts->map(function($item) {
+            /** @var $item Cart */
+            return OrderProduct::create([
+                'order_id' => $this->id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+            ]);
+        });
+
+        Cart::destroy($carts->pluck('id')->all());
+
+        return $orderProducts;
     }
 }

@@ -1,9 +1,10 @@
 <?php
 
 
-namespace Tests\Feature\FSM;
+namespace Tests\Feature\Brandshop\FSM;
 
 
+use App\Brandshop\FSM\Contracts\CallbackInterface;
 use App\Brandshop\FSM\Event\TransitionEvent;
 use App\Brandshop\FSM\Exceptions\DenyTransitionException;
 use App\Brandshop\FSM\State;
@@ -81,22 +82,62 @@ class StateMachineTest extends TestCase
 
         $statableModel->expects($this->once())
             ->method('getStatePropertyName')
-            ->willReturn('status');
+            ->willReturn('state');
 
         $stateMachine = new StateMachine($statableModel);
         $stateMachine->addState(new State('created'));
         $stateMachine->addState(new State('done'));
-        $stateMachine->addTransition(new Transition('process', ['created'], 'done'));
+        $stateMachine->addTransition(new Transition(
+            'process',
+            ['created'],
+            'done',
+            ['before' => BeforeCallback::class, 'after' => AfterCallback::class]
+            ));
         $stateMachine->initialize('created');
 
         $this->expectsEvents([TransitionEvent::PRE_TRANSITION, TransitionEvent::POST_TRANSITION]);
 
         $this->assertEquals('created', $stateMachine->getCurrentState()->getName());
 
+        $stateMachine->getModel()->beforeTest = false;
+        $stateMachine->getModel()->afterTest = false;
+
         $stateMachine->apply('process');
 
+        $this->assertTrue($stateMachine->getModel()->beforeTest);
+        $this->assertTrue($stateMachine->getModel()->afterTest);
+
         $this->assertEquals('done', $stateMachine->getCurrentState()->getName());
-        $this->assertEquals($statableModel->status, 'done');
+        $this->assertEquals($statableModel->state, 'done');
+    }
+}
+
+class BeforeCallback implements CallbackInterface
+{
+    public $model;
+
+    public function __construct($model)
+    {
+        $this->model = $model;
     }
 
+    public function handle()
+    {
+        $this->model->beforeTest = true;
+    }
+}
+
+class AfterCallback implements CallbackInterface
+{
+    public $model;
+
+    public function __construct($model)
+    {
+        $this->model = $model;
+    }
+
+    public function handle()
+    {
+        $this->model->afterTest = true;
+    }
 }

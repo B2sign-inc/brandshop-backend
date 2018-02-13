@@ -7,7 +7,7 @@ $factory->define(App\Models\Product::class, function (Faker $faker) {
     return [
         'name' => $name,
         'images' => [(string)Avatar::create($name)->toBase64()],
-        'price' => $faker->randomFloat(2, 0, 200),
+        'price' => $faker->numberBetween(1, 100000),
         'stock' => $faker->numberBetween(0, 100),
         'description' => $faker->realText(),
     ];
