@@ -44,7 +44,7 @@ class PaymentController extends Controller
         }
 
         $response = Transaction::sale([
-            'amount' => $order->amount / 100,
+            'amount' => $order->amount,
             'paymentMethodNonce' => $nonceFromTheClient,
             'options' => [
                 'submitForSettlement' => True

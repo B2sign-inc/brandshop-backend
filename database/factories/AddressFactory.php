@@ -6,7 +6,7 @@ use App\Models\Address;
 
 $factory->define(Address::class, function (Faker $faker) {
     return [
-        'user_id' => 0,
+        'user_id' => 1,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'street_address' => $faker->streetAddress,

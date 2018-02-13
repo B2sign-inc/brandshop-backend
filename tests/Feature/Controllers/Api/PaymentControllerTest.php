@@ -125,7 +125,7 @@ class PaymentControllerTest extends TestCase
         $response = $this->requestAsToken(
             $accessToken,
             'post',
-            route('api.payments.paid', ['order' => $this->createOrder($user, 200000)]),
+            route('api.payments.paid', ['order' => $this->createOrder($user, 2000)]),
             ['payment_method_nonce' => 'fake-valid-nonce']
         );
         $response->assertStatus(500);
@@ -134,7 +134,7 @@ class PaymentControllerTest extends TestCase
         $response = $this->requestAsToken(
             $accessToken,
             'post',
-            route('api.payments.paid', ['order' => $this->createOrder($user, 500100 )]),
+            route('api.payments.paid', ['order' => $this->createOrder($user, 5001 )]),
             ['payment_method_nonce' => 'fake-valid-nonce']
         );
         $response->assertStatus(500);
