@@ -82,5 +82,7 @@ class OrderController extends Controller
 
         $order->transition('cancel');
         $order->save();
+
+        return $this->respondSuccess();
     }
 }

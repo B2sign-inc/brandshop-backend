@@ -18,6 +18,5 @@ class AfterCancel implements CallbackInterface
 
     public function handle()
     {
-
     }
 }
