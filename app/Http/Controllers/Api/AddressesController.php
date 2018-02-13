@@ -78,4 +78,15 @@ class AddressesController extends Controller
     {
         $addressValidator->validate(new Address($request->all()));
     }
+
+    public function all()
+    {
+        $user = Auth::user();
+
+        return $user->addresses()->get()->map(function ($address) use ($user) {
+            $address->isDefaultShippingAddress = $address->id === $user->default_shipping_id;
+            $address->isDefaultBillingAddress = $address->id === $user->default_billing_id;
+            return $address;
+        });
+    }
 }

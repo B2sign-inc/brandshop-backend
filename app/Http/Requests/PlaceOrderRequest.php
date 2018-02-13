@@ -43,7 +43,6 @@ class PlaceOrderRequest extends FormRequest
 
         $validation['shipping_method_id'] = 'required|exists:shipping_methods,id';
 
-
         return $validation;
     }
 }

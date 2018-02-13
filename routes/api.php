@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth:api'], 'namespace' => 'Api'], function () {
     Route::put('user/address/{address}', 'UserController@updateAddress')->name('api.user.update.address');
 
     Route::get('addresses', 'AddressesController@index')->name('api.addresses.index');
+    Route::get('addresses/all', 'AddressesController@all')->name('api.addresses.all');
     Route::get('addresses/{address}', 'AddressesController@show')->name('api.addresses.show');
     Route::post('addresses', 'AddressesController@store')->name('api.addresses.store');
     Route::put('addresses/{address}', 'AddressesController@update')->name('api.addresses.update');
