@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->integer('category_id')->unsigned()->nullable();
             $table->json('images');
             $table->string('name', 255);
-            $table->decimal('price', 11, 3);
+            $table->integer('price')->unsigned();
             $table->integer('stock');
             $table->text('description');
             $table->timestamps();

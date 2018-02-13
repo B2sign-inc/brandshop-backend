@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-
 Route::post('token/refresh', 'Api\AuthController@refreshToken')->name('api.auth.token.refresh');
 Route::get('user/verify/{token}', 'Api\AuthController@verifyUser')->name('api.user.verify');
 
@@ -34,6 +33,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::delete('carts/{cart}', 'Api\CartController@destroy')->name('api.carts.destroy');
 
     Route::post('orders/place', 'Api\OrderController@place')->name('api.orders.place');
+    Route::get('payments/token', 'Api\PaymentController@generateBrainTreeToken')->name('api.payments.token');
+    Route::post('payments/{order}/paid', 'Api\PaymentController@paid')->name('api.payments.paid');
 
     Route::get('/user', function (Request $request) {
         return new \App\Http\Resources\UserResource($request->user());

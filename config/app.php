@@ -176,6 +176,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        \App\Brandshop\Providers\BrandShopServiceProvider::class,
+        \App\Brandshop\Providers\BrandshopConfigServiceProvider::class,
     ],
 
     /*

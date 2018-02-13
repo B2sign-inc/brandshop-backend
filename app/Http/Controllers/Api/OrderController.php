@@ -6,6 +6,7 @@ use App\Events\OrderPlaced;
 use App\Http\Requests\PlaceOrderRequest;
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\ShippingMethod;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -46,11 +47,14 @@ class OrderController extends Controller
             $data['billing_address_id'] = $billingAddress->id;
             $data['user_id'] = $user->id;
             $data['shipping_method_id'] = $request->get('shipping_method_id');
+            $data['amount'] = $user->calculateCart() + ShippingMethod::find($request->get('shipping_method_id'))->calculate();
 
             $order = new Order($data);
             $order->stateMachine()->initialize('created');
 
             $order->save();
+
+            $order->syncToOrderProduct($user->carts);
 
             // fire event
             event(new OrderPlaced($order));
@@ -66,7 +70,7 @@ class OrderController extends Controller
             if ($e instanceof ValidationException) {
                 throw new ValidationException($e->validator, $e->response, $e->errorBag);
             }
-            throw new $e;
+            throw new \Exception($e->getMessage());
         }
     }
 }

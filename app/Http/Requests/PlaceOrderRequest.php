@@ -25,7 +25,7 @@ class PlaceOrderRequest extends FormRequest
     {
         $validation['shipping.first_name'] = 'required|string|max:255';
         $validation['shipping.last_name'] = 'required|string|max:255';
-        $validation['shipping.phone_number'] = 'required|integer';
+        $validation['shipping.telephone'] = 'required|integer';
         $validation['shipping.street_address'] = 'required|string|max:255';
         $validation['shipping.city'] = 'required|string|max:255';
         $validation['shipping.state'] = 'required|string|max:255';
@@ -34,7 +34,7 @@ class PlaceOrderRequest extends FormRequest
         if ($this->request->get('use_different_billing_address')) {
             $validation['billing.first_name'] = 'required|string|max:255';
             $validation['billing.last_name'] = 'required|string|max:255';
-            $validation['billing.phone_number'] = 'required|integer';
+            $validation['billing.telephone'] = 'required|integer';
             $validation['billing.street_address'] = 'required|string|max:255';
             $validation['billing.city'] = 'required|string|max:255';
             $validation['billing.state'] = 'required|string|max:255';

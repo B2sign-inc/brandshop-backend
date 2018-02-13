@@ -17,7 +17,7 @@ class CreateShippingsTable extends Migration
             $table->increments('id');
             $table->integer('shipping_method_id')->unsigned();
             $table->integer('order_id')->unsigned();
-            $table->decimal('amount');
+            $table->integer('amount')->unsigned();
             $table->string('tracking_number')->unique();
             $table->string('state', 20);
             $table->timestamps();

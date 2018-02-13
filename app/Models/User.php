@@ -72,4 +72,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(EmailMessage::class);
     }
+
+    public function calculateCart()
+    {
+        return $this->carts->sum(function($cart) {
+            return $cart->product->price;
+        });
+    }
 }

@@ -21,6 +21,7 @@ class CreateOrdersTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('shipping_method_id')->unsigned();
             $table->integer('payment_id')->unsigned()->nullable();
+            $table->integer('amount')->unsigned();
             $table->timestamps();
         });
     }

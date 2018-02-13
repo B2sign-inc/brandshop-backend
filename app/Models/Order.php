@@ -10,7 +10,11 @@ class Order extends Model implements StatableInterface
 {
     use Statable;
 
-    protected $fillable = ['state', 'shipping_address_id', 'billing_address_id', 'user_id', 'shipping_method_id', 'payment_id'];
+    protected $casts = [
+        'user_id' => 'int',
+    ];
+
+    protected $fillable = ['state', 'shipping_address_id', 'billing_address_id', 'user_id', 'shipping_method_id', 'payment_id', 'amount'];
 
     protected $states = [
         'created',
@@ -75,21 +79,27 @@ class Order extends Model implements StatableInterface
         return 'state';
     }
 
+    public function orderProducts()
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
+
     /**
-     * @param User $user
      * @return array
      */
-    public function syncToOrderProduct(User $user)
+    public function syncToOrderProduct($carts)
     {
-        return array_map(function($item) use ($user) {
+        $orderProducts = $carts->map(function($item) {
             /** @var $item Cart */
             return OrderProduct::create([
                 'order_id' => $this->id,
                 'product_id' => $item->product_id,
                 'quantity' => $item->quantity,
-                'user_id' => $user->id
             ]);
+        });
 
-        }, $user->carts);
+        Cart::destroy($carts->pluck('id')->all());
+
+        return $orderProducts;
     }
 }
