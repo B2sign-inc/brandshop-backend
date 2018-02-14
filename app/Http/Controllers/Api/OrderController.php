@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\OrderPlaced;
 use App\Http\Requests\PlaceOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\ShippingMethod;
@@ -61,7 +62,7 @@ class OrderController extends Controller
 
             DB::commit();
 
-            return $order;
+            return new OrderResource($order);
 
             // all exceptions handled by App\Exceptions\Handler
         } catch (\Exception $e) {
@@ -72,6 +73,15 @@ class OrderController extends Controller
             }
             throw new \Exception($e->getMessage());
         }
+    }
+
+    public function show(Order $order)
+    {
+        if ($order->user_id !== Auth::user()->id) {
+            return $this->respondForbidden();
+        }
+
+        return new OrderResource($order);
     }
 
     public function cancel(Order $order)
