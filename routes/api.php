@@ -53,4 +53,6 @@ Route::group(['middleware' => ['auth:api'], 'namespace' => 'Api'], function () {
 
     Route::get('emailMessages', 'EmailMessagesController@index')->name('api.emailMessages.index');
     Route::get('emailMessages/{emailMessage}', 'EmailMessagesController@show')->name('api.emailMessages.show');
+
+    Route::get('shippingMethod/all', 'ShippingMethodController@all')->name('api.shippingMethod.all');
 });
