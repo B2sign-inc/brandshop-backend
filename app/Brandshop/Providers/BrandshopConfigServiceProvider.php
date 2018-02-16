@@ -22,6 +22,9 @@ class BrandshopConfigServiceProvider extends ServiceProvider
     {
         // TODO fetch configuration of current shop from remote agent database.
         $this->app->make(BrandshopConfig::class)->set('braintree.environment', $this->app['config']['brandshop.braintree.environment']);
+        $this->app->make(BrandshopConfig::class)->set('braintree.merchantId', $this->app['config']['brandshop.braintree.merchantId']);
+        $this->app->make(BrandshopConfig::class)->set('braintree.publicKey', $this->app['config']['brandshop.braintree.publicKey']);
+        $this->app->make(BrandshopConfig::class)->set('braintree.privateKey', $this->app['config']['brandshop.braintree.privateKey']);
     }
 
     public function provides()
