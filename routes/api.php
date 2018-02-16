@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth:api'], 'namespace' => 'Api'], function () {
     Route::delete('carts/empty', 'CartController@empty')->name('api.carts.empty');
     Route::delete('carts/{cart}', 'CartController@destroy')->name('api.carts.destroy');
 
+    Route::get('orders', 'OrderController@index')->name('api.orders.index');
     Route::get('orders/{order}', 'OrderController@show')->name('api.orders.show');
     Route::post('orders/place', 'OrderController@place')->name('api.orders.place');
     Route::get('payments/token', 'PaymentController@generateBrainTreeToken')->name('api.payments.token');

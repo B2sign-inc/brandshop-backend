@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\OrderPlaced;
 use App\Http\Requests\PlaceOrderRequest;
+use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Models\Address;
 use App\Models\Order;
@@ -18,6 +19,12 @@ class OrderController extends Controller
 {
 
     use ApiResponse;
+
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+        return new OrderCollection($user->orders()->paginate($request->get('limit', 15)));
+    }
 
     public function place(PlaceOrderRequest $request)
     {
