@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Brandshop\FSM\Event\TransitionEvent;
 use App\Events\UserRegistered;
 use App\Listeners\SendUserVerificationNotification;
-use App\Listeners\StateHistroyManager;
+use App\Listeners\StateHistoryManager;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -21,7 +21,7 @@ class EventServiceProvider extends ServiceProvider
             SendUserVerificationNotification::class,
         ],
         TransitionEvent::POST_TRANSITION => [
-            StateHistroyManager::class
+            StateHistoryManager::class
         ]
     ];
 

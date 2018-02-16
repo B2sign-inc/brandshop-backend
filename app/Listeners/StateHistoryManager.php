@@ -6,7 +6,7 @@ use App\Brandshop\FSM\Event\TransitionEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class StateHistroyManager
+class StateHistoryManager
 {
     /**
      * Create the event listener.
