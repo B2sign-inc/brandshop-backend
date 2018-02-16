@@ -54,14 +54,16 @@ class PaymentController extends Controller
         if (!$response->success) {
             throw new \Exception('Braintree was unable to perform a charge: ' . $response->message);
         }
+
+
         $payment = new Payment();
         $payment->amount = $order->amount;
         $payment->transaction = $response->transaction;
-        $payment->save();
 
         $order->transition('pay');
-        $order->payment_id = $payment->id;
         $order->save();
+
+        $order->payment()->save($payment);
 
         return $this->respondSuccess();
     }

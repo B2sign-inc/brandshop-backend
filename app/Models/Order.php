@@ -89,6 +89,11 @@ class Order extends Model implements StatableInterface
         return $this->hasMany(OrderProduct::class);
     }
 
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
+
     /**
      * @return array
      */
