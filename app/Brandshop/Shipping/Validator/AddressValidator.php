@@ -6,24 +6,39 @@ namespace App\Brandshop\Shipping\Validator;
 
 use App\Brandshop\Shipping\Exceptions\InvalidAddressException;
 use App\Models\Address;
+use Hbliang\ShippingManager\Shipping;
+use Illuminate\Support\Facades\Cache;
 
 class AddressValidator
 {
 
     /**
      * @return boolean
-     * @throws InvalidAddressException
      */
-    public function validate(Address $address, $soft = false)
+    public function validate(Address $address)
     {
-        // TODO validate address
         if (trim($address->street_address) === 'test') {
-            if ($soft) {
-                return false;
-            } else {
-                throw new InvalidAddressException('Your address is invalid.');
-            }
+            return false;
         }
-        return true;
+
+        $cacheKey = $address->toJson();
+
+        if (Cache::tags(['address', 'validate'])->has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        $addressEntity = \Hbliang\ShippingManager\Entities\Address::factory([
+            'street' => $address->street_address,
+            'city' => $address->city,
+            'state' => $address->state,
+            'postalCode' => $address->postcode,
+            'country' => 'US',
+        ]);
+
+        Shipping::validateAddresses([$addressEntity]);
+
+        Cache::tags(['address', 'validate'])->put($cacheKey, $addressEntity->isValid());
+
+        return $addressEntity->isValid();
     }
 }

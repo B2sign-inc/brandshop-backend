@@ -179,6 +179,8 @@ return [
 
         \App\Brandshop\Providers\BrandShopServiceProvider::class,
         \App\Brandshop\Providers\BrandshopConfigServiceProvider::class,
+
+        Hbliang\ShippingManager\ServiceProvider::class,
     ],
 
     /*

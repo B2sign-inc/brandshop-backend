@@ -107,15 +107,7 @@ class OrderControllerTest extends TestCase
 
         $accessToken = $this->login(['email' => $user->email, 'password' => 'secret']);
 
-        $address = [
-            'first_name' => 'ben',
-            'last_name' => 'waht',
-            'telephone' => 62612345678,
-            'street_address' => 'hello',
-            'city' => 'In',
-            'state' => 'CA',
-            'postcode' => '91780',
-        ];
+        $address = $this->getValidateAddress();
 
         $response = $this->requestAsToken($accessToken, 'post', route('api.orders.place'), [
             'shipping' => $address,
@@ -139,15 +131,7 @@ class OrderControllerTest extends TestCase
 
         $accessToken = $this->login(['email' => $user->email, 'password' => 'secret']);
 
-        $address = [
-            'first_name' => 'ben',
-            'last_name' => 'waht',
-            'telephone' => 62612345678,
-            'street_address' => 'hello',
-            'city' => 'In',
-            'state' => 'CA',
-            'postcode' => '91780',
-        ];
+        $address = $this->getValidateAddress();
 
         $this->assertEquals(0, Address::count());
         $response = $this->requestAsToken($accessToken, 'post', route('api.orders.place'), [
@@ -179,11 +163,10 @@ class OrderControllerTest extends TestCase
 
         $accessToken = $this->login(['email' => $user->email, 'password' => 'secret']);
 
-        $address = factory(Address::class)->make(['telephone' => 123456789])->toArray();
         $shippingMethod = factory(ShippingMethod::class)->create();
 
         $response = $this->requestAsToken($accessToken, 'post', route('api.orders.place'), [
-            'shipping' => $address,
+            'shipping' => $this->getValidateAddress(),
             'shipping_method_id' => $shippingMethod->id,
         ]);
 
@@ -193,5 +176,19 @@ class OrderControllerTest extends TestCase
         $this->assertEquals(123 + 888 + $shippingMethod->calculate(), $order->amount);
         $this->assertEquals(2, $order->orderProducts()->count());
         $this->assertEquals(0, $user->carts()->count());
+    }
+
+    protected function getValidateAddress()
+    {
+        return [
+            'first_name' => 'first',
+            'last_name' => 'last',
+            'street_address' => '1600 Amphitheatre Parkway',
+            'extra_address' => '',
+            'postcode' => '94043 ',
+            'city' => 'Mountain View',
+            'state' => 'CA',
+            'telephone' => '6268888888',
+        ];
     }
 }

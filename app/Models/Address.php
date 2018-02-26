@@ -9,19 +9,6 @@ use Illuminate\Support\Facades\App;
 
 class Address extends Model
 {
-    public static function boot()
-    {
-        parent::boot();
-
-        self::creating(function ($model) {
-//            $model->validate();
-        });
-
-        self::updating(function ($model) {
-//            $model->validate();
-        });
-    }
-
     protected $fillable = [
         'user_id', 'first_name', 'last_name', 'street_address', 'extra_address', 'postcode',
         'city', 'state', 'telephone',
