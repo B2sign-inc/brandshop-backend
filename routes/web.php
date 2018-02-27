@@ -15,3 +15,14 @@ Route::get('user/verify/{token}', 'Api\AuthController@verifyUser')->name('user.v
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function ($router) {
+    $router->get('/', function() {
+       return redirect()->route('admin.dashboard');
+    });
+    $router->get('login', 'AuthController@showLoginForm')->name('admin.login');
+    $router->post('login', 'AuthController@login');
+    $router->post('logout', 'AuthController@logout')->name('admin.logout');
+
+    $router->get('dashboard', 'DashboardController@index')->name('admin.dashboard');
+});
