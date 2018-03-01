@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    protected $fillable = ['quantity', 'product_id', 'user_id'];
+    protected $fillable = ['quantity', 'product_id', 'user_id', 'attributes'];
     protected $casts = [
         'user_id' => 'int',
         'product_id' => 'int',
+        'attributes' => 'array',
     ];
 
     public function product()

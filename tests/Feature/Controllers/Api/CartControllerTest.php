@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Controllers\Api;
 
+use App\Models\Attribute;
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\ProductAttribute;
 use App\Models\User;
 use Tests\Auth;
 use Tests\TestCase;
@@ -33,7 +35,7 @@ class CartControllerTest extends TestCase
         $response->assertJsonValidationErrors('product_id');
         $response->assertStatus((422));
 
-        $product = factory(Product::class)->make();
+        $product = factory(Product::class)->create();
 
         // missing quantity
         $response = $this->requestAsToken($token, 'POST', route('api.carts.store'), ['product_id' => $product->id]);
@@ -49,10 +51,29 @@ class CartControllerTest extends TestCase
         $response = $this->requestAsToken($token, 'POST', route('api.carts.store'), ['product_id' => $product->id, 'quantity' => -1]);
         $response->assertJsonValidationErrors('quantity');
         $response->assertStatus((422));
+
+        // have attributes but don't have value
+        $response = $this->requestAsToken($token, 'POST', route('api.carts.store'), [
+            'product_id' => $product->id,
+            'quantity' => 1,
+            'attributes' => ['1' => null],
+        ]);
+        $response->assertJsonValidationErrors('attributes.1');
+        $response->assertStatus(422);
+
+        // attributes do not exist in database
+        // illegal request
+        $response = $this->requestAsToken($token, 'POST', route('api.carts.store'), [
+            'product_id' => $product->id,
+            'quantity' => 1,
+            'attributes' => ['1' => 'red'],
+        ]);
+        $response->assertJsonValidationErrors('attributes');
+        $response->assertStatus(422);
     }
 
 
-    public function testAddToCartSuccessFully()
+    public function testAddNonAttributesProductToCartSuccessFully()
     {
         $product = factory(Product::class)->create();
 
@@ -65,6 +86,37 @@ class CartControllerTest extends TestCase
         $cart = $carts->first();
         $this->assertEquals($product->id, $cart->product_id);
         $this->assertEquals(3, $cart->quantity);
+    }
+
+    public function addProductWithAttributesToCartSuccessfully()
+    {
+        $product = factory(Product::class)->create();
+        $attribute = factory(Attribute::class)->create();
+        $productAttribute = ProductAttribute::create([
+            'product_id' => $product->id,
+            'attribute_id' => $attribute->id,
+        ]);
+        $productAttribute->values()->save([
+            'value' =>  'hello world',
+        ]);
+
+
+        $response = $this->requestAsLogined('POST', route('api.carts.store'), [
+            'product_id' => $product->id,
+            'quantity'=> 3,
+            'attributes' => [
+                $attribute->id => 'hello world'
+            ]
+        ]);
+        $response->assertSuccessful();
+
+        $carts = Cart::all();
+        $this->assertEquals(1, $carts->count());
+
+        $cart = $carts->first();
+        $this->assertEquals($product->id, $cart->product_id);
+        $this->assertEquals(3, $cart->quantity);
+        $this->assertArraySubset(['attribute_id' => $attribute->id, 'value' => 'hello world'], $cart->attributes);
     }
 
     public function testUpdate()

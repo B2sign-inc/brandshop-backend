@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCartRequest;
 use App\Http\Resources\CartCollection;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
@@ -25,19 +26,32 @@ class CartController extends Controller
         return $this->carts();
     }
 
-    public function store(Request $request)
+    public function store(StoreCartRequest $request)
     {
-        $data = $this->validate($request, [
-            'product_id' => 'required|integer|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-        ]);
-        $data['user_id'] = Auth::user()->id;
+        $attributes = [];
+        foreach ($request->get('attributes', []) as $attributeId => $value) {
+            $attributes[] = [
+                'attribute_id' => $attributeId,
+                'value' => $value,
+            ];
+        }
 
-        $cart = Cart::create($data);
+        Cart::create([
+            'product_id' => $request->get('product_id'),
+            'quantity' => $request->get('quantity'),
+            'user_id' => Auth::user()->id,
+            'attributes' => $attributes,
+        ]);
 
         return $this->carts();
     }
 
+    /**
+     * TODO update attributes
+     * @param Request $request
+     * @param Cart $cart
+     * @return CartCollection|\Illuminate\Http\JsonResponse
+     */
     public function update(Request $request, Cart $cart)
     {
         if ($cart->user_id !== Auth::user()->id) {
