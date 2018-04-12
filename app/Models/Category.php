@@ -9,6 +9,8 @@ class Category extends Model
 {
     use NodeTrait;
 
+    protected $fillable = ['title'];
+
     public function products()
     {
         return $this->hasMany(Product::class);

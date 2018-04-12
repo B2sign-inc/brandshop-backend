@@ -25,4 +25,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function ($router) {
     $router->post('logout', 'AuthController@logout')->name('admin.logout');
 
     $router->get('dashboard', 'DashboardController@index')->name('admin.dashboard');
+
+    $router->get('categories', 'CategoryController@index')->name('admin.categories.index');
+    $router->post('categories', 'CategoryController@save')->name('admin.categories.save');
+    $router->delete('categories/{category}', 'CategoryController@destroy')->name('admin.categories.destroy');
+    $router->post('categories/resetAndSync', 'CategoryController@resetAndSyncFromB2sign')->name('admin.categories.resetAndSync');
+
+
+    $router->get('products', 'ProductController@index')->name('admin.products.index');
 });

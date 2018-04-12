@@ -25,6 +25,9 @@ class BrandshopConfigServiceProvider extends ServiceProvider
         $this->app->make(BrandshopConfig::class)->set('braintree.merchantId', $this->app['config']['brandshop.braintree.merchantId']);
         $this->app->make(BrandshopConfig::class)->set('braintree.publicKey', $this->app['config']['brandshop.braintree.publicKey']);
         $this->app->make(BrandshopConfig::class)->set('braintree.privateKey', $this->app['config']['brandshop.braintree.privateKey']);
+
+        // TODO set cache prefix
+        // $this->app['config']['cache.prefix'] = '';
     }
 
     public function provides()

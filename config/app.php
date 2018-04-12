@@ -180,6 +180,8 @@ return [
         \App\Brandshop\Providers\BrandShopServiceProvider::class,
         \App\Brandshop\Providers\BrandshopConfigServiceProvider::class,
 
+        Laracasts\Flash\FlashServiceProvider::class,
+
         Hbliang\ShippingManager\ServiceProvider::class,
     ],
 
